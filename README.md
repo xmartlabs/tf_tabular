@@ -1,6 +1,23 @@
-# Python Project Template
+# TF Tabular
 
-This project is a template for creating Python projects that follows the Python Standards declared in PEP 621. It uses a pyproject.yaml file to configure the project and Flit to simplify the build process and publish to PyPI. Flit simplifies the build and packaging process for Python projects by eliminating the need for separate setup.py and setup.cfg files. With Flit, you can manage all relevant configurations within the pyproject.toml file, streamlining development and promoting maintainability by centralizing project metadata, dependencies, and build specifications in one place.
+### Feature Overview
+* Create input layers based on lists of columns
+* No model building or training: Build whatever you want on top
+* Support custom embeddings
+* Support attention for mixing sequence layers
+* Support multi-hot categoricals
+* Support computing vocab and normalization params?
+
+
+### Competitor analysis
+* DeepTables:
+  * This is for TensorFlow
+  * Broader scope: Includes model building and training
+* Pytorch tabular:
+  * Only Pytorch
+  * Broader scope: Includes model building and training
+  * Not focused on recommenders (no support for multi-hot and sequence columns https://github.com/manujosephv/pytorch_tabular/issues/174)
+
 
 ## Project Organization
 
