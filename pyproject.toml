@@ -21,6 +21,11 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dynamic = ["version"]
+dependencies = [
+  'numpy >= 1.26',
+  'pandas >= 2.2.1',
+  'tensorflow <= 2.15.1',
+]
 
 [project.optional-dependencies]
 test = [
@@ -33,6 +38,11 @@ test = [
     "pytest==8.1.1",
     "pytest-github-actions-annotate-failures",
 ]
+examples = [
+  'jupyter',
+  'tensorflow_datasets >= 4.9.4',
+  'tensorflow-recommenders >= 0.7.3',
+]
 
 [project.urls]
 Documentation = "https://github.com/mats-claassen/tf-tabular/tree/main#readme"
@@ -40,7 +50,7 @@ Source = "https://github.com/mats-claassen/tf-tabular"
 Tracker = "https://github.com/mats-claassen/tf-tabular/issues"
 
 [tool.flit.module]
-name = "python_package"
+name = "tf_tabular"
 
 [tool.coverage.run]
 branch = true
