@@ -38,14 +38,16 @@ def get_combiner(combiner, is_multi_hot):
         raise ValueError(f"Unknown combiner: {combiner}")
 
 
-def build_projection_layer(cont_layers, num_projection, l2_reg, cross_features=True):
+def build_projection_layer(cont_layers, num_projection, l2_reg, activation="relu", cross_features=True):
     if cross_features:
         cont_layers = list(cont_layers)
         pairs = list(combinations(cont_layers, 2))
         for p in pairs:
             cont_layers.append(tf.math.multiply(p[0], p[1]))
     concat = Concatenate(axis=1, name="concat_continuous")(cont_layers)
-    return Dense(num_projection, activation="relu", name="continuous_projection", kernel_regularizer=L2(l2_reg))(concat)
+    return Dense(num_projection, activation=activation, name="continuous_projection", kernel_regularizer=L2(l2_reg))(
+        concat
+    )
 
 
 def batch_run_lookup_on_df(df, lookup, batch_size=1000):

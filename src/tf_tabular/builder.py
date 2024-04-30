@@ -17,7 +17,7 @@ class InputBuilder:
     ):
         self.sequence_processor = sequence_processor
         self.combiner = combiner
-        self.numeric_processor = numeric_processor
+        self.numeric_processor = numeric_processor or NumericProcessor()
         self.input_specs = []
 
     def add_inputs(self, input_specs: List[InputSpec]):
