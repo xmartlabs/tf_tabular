@@ -25,14 +25,15 @@ Here is a basic example of how to use TF Tabular:
 
 ```python
 from tf_tabular.builder import InputBuilder
+from tf_tabular.numeric_processor import NumericProcessor
 
 # Define columns to use and specify additional parameters:
-categoricals = ['Pclass', 'no_cabin']
+categoricals = ['Pclass', 'Sex']
 numericals = ['Age', 'Fare']
 # ....
 
 # Build model:
-input_builder = InputBuilder()
+input_builder = InputBuilder(numeric_processor=NumericProcessor(num_projection=8, cross_features=False))
 input_builder.add_inputs_list(categoricals=categoricals,
                               numericals=numericals,
                               normalization_params=norm_params,
@@ -44,8 +45,9 @@ output = Dense(1, activation='sigmoid')(output)
 model = Model(inputs=inputs, outputs=output)
 ```
 
-<!-- Which will produce a model like this: -->
-<!-- TODO: <Insert NETRON view of model> -->
+Which will produce a model like this:
+![Netron Model View](/media/images/example_netron.png)
+
 
 Look at the examples folder for more complete examples.
 
@@ -57,7 +59,7 @@ This is a list of possible features to be added in the future depending on need 
 
 - [ ] Parse dataset to separate numeric vs categoricals, multihots and sequencials
 - [ ] Implement other types of normalization
-- [ ] Support computing vocab and normalization params?
+- [ ] Support computing vocab and normalization params instead of receiving them as parameters
 - [ ] Improve documentation and provide more usage examples
 
 ## License
