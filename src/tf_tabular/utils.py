@@ -19,12 +19,10 @@ from tensorflow.keras.regularizers import L2
 def _input_layer(name, is_multi_hot=False, is_string=False):
     if is_multi_hot:
         shape = (None,)
-        # ragged = True
     else:
         shape = (1,)
-        # ragged = False
     dtype = tf.string if is_string else None
-    return tf.keras.Input(shape=shape, dtype=dtype, name=name)  # , ragged=ragged
+    return tf.keras.Input(shape=shape, dtype=dtype, name=name)
 
 
 def get_combiner(combiner, is_multi_hot):
