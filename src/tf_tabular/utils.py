@@ -104,6 +104,9 @@ def build_continuous_input(name, mean: float | None = None, variance: float | No
     :return tuple: preprocessed input and inputs
     """
     inp = _input_layer(name)
+    if sample is None and mean is None and variance is None:
+        # No normalization
+        return (inp, inp)
     norm_layer = Normalization(axis=None, name=name + "_norm", mean=mean, variance=variance)
     if sample is not None:
         norm_layer.adapt(sample)
@@ -142,7 +145,7 @@ def build_categorical_input(name, embedding_dim, vocab, is_multi_hot, embedding_
     return (x, inp)
 
 
-def get_vocab(series, max_size):
+def get_vocab(series, max_size: int = None):
     if isinstance(series.iloc[0], list) or isinstance(series.iloc[0], np.ndarray):
         series = series.explode()
     series = series.dropna()

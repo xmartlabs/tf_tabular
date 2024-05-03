@@ -20,7 +20,7 @@ class SequenceProcessor:
     def combine(self, x):
         # if self.combine_before_attention:
         # Make sure numerical elements can be concatenated to embeddings
-        reshaped = [t if t.rank == 3 else tf.expand_dims(t, axis=-1) for t in x]
+        reshaped = [t if len(t.shape) == 3 else tf.expand_dims(t, axis=-1) for t in x]
         return tf.keras.layers.Concatenate(axis=-1)(reshaped)
 
     def attention(self, x):

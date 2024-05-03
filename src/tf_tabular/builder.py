@@ -47,7 +47,7 @@ class InputBuilder:
             )
         for num in numericals:
             self.input_specs.append(
-                NumInputSpec(num, norm_params=normalization_params[num], is_sequence=num in sequentials)
+                NumInputSpec(num, norm_params=normalization_params.get(num, {}), is_sequence=num in sequentials)
             )
 
     def build_input_layers(self):

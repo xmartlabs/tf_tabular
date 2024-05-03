@@ -64,10 +64,8 @@ class NumInputSpec(InputSpec):
             self.mean = norm_params["mean"]
             self.variance = norm_params["var"]
         else:
-            raise NotImplementedError(
-                "Only Standard normalization implemented. \
-                                      Normalization parameters must contain 'mean' and 'var' or 'sample' keys"
-            )
+            # No normalization
+            print(f"No normalization parameters found for {name}. Not normalizing this column")
 
     def build_layer(self):
         output, input = build_continuous_input(self.name, self.mean, self.variance, self.sample)
