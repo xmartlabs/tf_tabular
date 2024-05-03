@@ -145,7 +145,7 @@ def build_categorical_input(name, embedding_dim, vocab, is_multi_hot, embedding_
     return (x, inp)
 
 
-def get_vocab(series, max_size: int = None):
+def get_vocab(series, max_size: int | None = None):
     if isinstance(series.iloc[0], list) or isinstance(series.iloc[0], np.ndarray):
         series = series.explode()
     series = series.dropna()
@@ -155,5 +155,4 @@ def get_vocab(series, max_size: int = None):
     vocab = set(uniques)
     if "_none_" in vocab:
         vocab.remove("_none_")
-    vocab = sorted(vocab)
-    return vocab
+    return sorted(vocab)
