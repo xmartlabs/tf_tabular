@@ -15,17 +15,17 @@ class SequenceProcessor:
         self.key_dim = key_dim
         self.attention_builder = attention_builder
 
-    def _combine(self, x: List[tf.keras.Layer]):
+    def _combine(self, x: List[tf.keras.layers.Layer]):
         # Make sure numerical elements can be concatenated to embeddings
         reshaped = [t if len(t.shape) == 3 else tf.expand_dims(t, axis=-1) for t in x]
         return tf.keras.layers.Concatenate(axis=-1)(reshaped)
 
-    def _attention(self, x: tf.keras.Layer):
+    def _attention(self, x: tf.keras.layers.Layer):
         if self.attention_builder is not None:
             return self.attention_builder(x)
         return tf.keras.layers.MultiHeadAttention(num_heads=self.attn_heads, key_dim=self.key_dim)(x, x)
 
-    def process_layers(self, x: List[tf.keras.Layer]):
+    def process_layers(self, x: List[tf.keras.layers.Layer]):
         """Processes a list of layers, concatenating them and applying an attention layer."""
         x = self._combine(x)
         x = self._attention(x)

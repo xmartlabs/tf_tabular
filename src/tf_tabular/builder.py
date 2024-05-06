@@ -70,9 +70,9 @@ class InputBuilder:
                 NumInputSpec(num, norm_params=normalization_params.get(num, {}), is_sequence=num in sequentials)
             )
 
-    def build_input_layers(self) -> tuple[List[tf.keras.Layer], tf.Tensor]:
+    def build_input_layers(self) -> tuple[List[tf.keras.layers.Layer], tf.Tensor]:
         """Build input layer stack and return the input layers and the output layer for building the model.
-        :return tuple[List[tf.keras.Layer], tf.Tensor]: Tuple containing the input layers and the output layer
+        :return tuple[List[tf.keras.layers.Layer], tf.Tensor]: Tuple containing the input layers and the output layer
         """
         input_layers = []
         sequence_layers = []
@@ -106,7 +106,7 @@ class InputBuilder:
     def merge_list(self, x: tf.Tensor, is_list: bool):
         """Combines multi_hot of sequential layers reducing their rank to be combined with other layers.
 
-        :param tf.keras.Layer x: input layer
+        :param tf.keras.layers.Layer x: input layer
         :param bool is_list: if the input is a list or not
         :return EagerTensor: result of applying the combiner to the input
         """
