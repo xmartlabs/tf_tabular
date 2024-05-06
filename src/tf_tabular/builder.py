@@ -71,7 +71,7 @@ class InputBuilder:
             )
 
     def build_input_layers(self) -> tuple[List[tf.keras.layers.Layer], tf.Tensor]:
-        """Build input layer stack and return the input layers and the output layer for building the model.
+        """Builds input layer stack and return the input layers and the output layer for building the model.
         :return tuple[List[tf.keras.layers.Layer], tf.Tensor]: Tuple containing the input layers and the output layer
         """
         input_layers = []

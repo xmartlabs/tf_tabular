@@ -21,7 +21,7 @@ class NumericProcessor:
         self.builder = builder
         self.projection_activation = projection_activation
 
-    def project(self, x: List[tf.keras.layers.Layer]):
+    def project(self, x: List[tf.Tensor]) -> List[tf.Tensor]:
         """If num_projection is not None, project the numerical features to a lower or higher dimension.
         If a builder is provided, use that to build the projection layer. Otherwise, use the default projection layer.
         """
