@@ -1,7 +1,12 @@
+from typing import List
+import tensorflow as tf
+
 from .utils import build_projection_layer
 
 
 class NumericProcessor:
+    """This class is used to project numerical features to a lower or higher dimension."""
+
     def __init__(
         self,
         num_projection: int | None = None,
@@ -16,7 +21,10 @@ class NumericProcessor:
         self.builder = builder
         self.projection_activation = projection_activation
 
-    def project(self, x):
+    def project(self, x: List[tf.keras.Layer]):
+        """If num_projection is not None, project the numerical features to a lower or higher dimension.
+        If a builder is provided, use that to build the projection layer. Otherwise, use the default projection layer.
+        """
         if self.builder is not None:
             return self.builder(x)
         if self.num_projection is None:

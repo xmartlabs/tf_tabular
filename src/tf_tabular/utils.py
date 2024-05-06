@@ -16,7 +16,9 @@ from tensorflow.keras.layers import (
 from tensorflow.keras.regularizers import L2
 
 
-def _input_layer(name, is_multi_hot=False, is_string=False):
+def _input_layer(name: str, is_multi_hot: bool = False, is_string: bool = False):
+    """Build input layer for a column"""
+    shape: tuple[None] | tuple[int]
     if is_multi_hot:
         shape = (None,)
     else:
@@ -25,8 +27,15 @@ def _input_layer(name, is_multi_hot=False, is_string=False):
     return tf.keras.Input(shape=shape, dtype=dtype, name=name)
 
 
-def get_combiner(combiner, is_multi_hot):
-    if not is_multi_hot:
+def get_combiner(combiner: str, is_list: bool):
+    """Builds a layer to combine the output of a sequential or multi-hot layer, reducing the rank by 1.
+
+    :param str combiner: The combiner can be one of "mean", "sum" or "max"
+    :param bool is_list: If the column is multi_hot or sequence
+    :raises NotImplementedError: If the combiner has not been implemented.
+    :return tf.keras.Layer: Layer to combine the output of a sequential or multi-hot layer
+    """
+    if not is_list:
         return Reshape((-1,))
     elif combiner == "mean":
         return GlobalAveragePooling1D()
@@ -35,7 +44,7 @@ def get_combiner(combiner, is_multi_hot):
     elif combiner == "max":
         return GlobalMaxPool1D()
     else:
-        raise ValueError(f"Unknown combiner: {combiner}")
+        raise NotImplementedError(f"Unknown combiner: {combiner}")
 
 
 def build_projection_layer(cont_layers, num_projection, l2_reg, activation="relu", cross_features=True):
@@ -60,7 +69,8 @@ def batch_run_lookup_on_df(df, lookup, batch_size=1000):
 
 def get_embedding_matrix(lookup, embedding_df: pd.DataFrame):
     """Expects a lookup layer and a dataframe with columns 'id' and 'embedding' where the embeddings are already
-    converted to numpy arrays.
+    converted to numpy arrays. Returns a matrix with the embeddings in the same order as the lookup vocabulary.
+    It will also include 1 OOV embedding at the beginning of the matrix.
     """
     om = lookup.output_mode
     lookup.output_mode = "int"
@@ -75,7 +85,25 @@ def get_embedding_matrix(lookup, embedding_df: pd.DataFrame):
     return matrix
 
 
-def get_embedding_layer(num_tokens, embedding_dim, name, lookup, embedding_df=None, verbose=False):
+def get_embedding_layer(
+    num_tokens: int,
+    embedding_dim: int,
+    name: str,
+    lookup: StringLookup | IntegerLookup | None = None,
+    embedding_df: pd.DataFrame | None = None,
+    verbose=False,
+):
+    """Builds the embedding layer for a categorical column. If embedding_df is provided, it will use the precomputed
+    embeddings. Otherwise, it will create a trainable embedding layer.
+
+    :param int num_tokens: Number of tokens to be supported by embedding layer.
+    :param Dict[str, int] embedding_dim: Dimension for the embedding layer.
+    :param str name: Name of the layer.
+    :param StringLookup | IntegerLookup | None lookup: Optional lookup layer needed when passing precomputed embeddings.
+    :param pd.DataFrame | None embedding_df: Precomputed embeddings in a dataframe containing 'id' and 'embeddings' columns, defaults to None
+    :param bool verbose: When set to True prints attributes of the embedding matrix, defaults to False. Only applies when embedding_df is not None.
+    :return Embedding: Embedding layer
+    """
     if embedding_df is None:
         return Embedding(num_tokens, embedding_dim, name=name)
     embedding_matrix = get_embedding_matrix(lookup, embedding_df)
@@ -145,7 +173,8 @@ def build_categorical_input(name, embedding_dim, vocab, is_multi_hot, embedding_
     return (x, inp)
 
 
-def get_vocab(series, max_size: int | None = None):
+def get_vocab(series: pd.Series, max_size: int | None = None):
+    """Get the vocabulary of a series"""
     if isinstance(series.iloc[0], list) or isinstance(series.iloc[0], np.ndarray):
         series = series.explode()
     series = series.dropna()
