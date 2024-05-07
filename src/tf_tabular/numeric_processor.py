@@ -22,8 +22,9 @@ class NumericProcessor:
         self.projection_activation = projection_activation
 
     def project(self, x: List[tf.Tensor]) -> List[tf.Tensor]:
-        """If num_projection is not None, project the numerical features to a lower or higher dimension.
-        If a builder is provided, use that to build the projection layer. Otherwise, use the default projection layer.
+        """If num_projection is not None, projects the numerical features to a lower or higher dimension.
+        If a builder is provided, it uses that to build the projection layer. Otherwise, uses the default projection
+        layer.
         """
         if self.builder is not None:
             return self.builder(x)

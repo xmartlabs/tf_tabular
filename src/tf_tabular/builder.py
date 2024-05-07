@@ -29,7 +29,7 @@ class InputBuilder:
         self.input_specs = []
 
     def add_inputs(self, input_specs: List[InputSpec]):
-        """Add input specifications to the model"""
+        """Adds input specifications to the model"""
         self.input_specs.extend(input_specs)
 
     def add_inputs_list(
