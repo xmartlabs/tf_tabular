@@ -4,11 +4,11 @@ TF Tabular is a project aimed at simplifying the process of handling tabular dat
 
 ## Features
 
-- Create input layers based on lists of columns
-- Support custom embeddings
-- Support attention for mixing sequence layers
-- Support multi-hot categoricals
-- No model building or training: Build whatever you want on top
+- **Create input layers based on lists of columns**
+- **Support custom embeddings**: Useful to include external embeddings for example obtained from an LLM.
+- **Support sequence layers**: Useful for time series or when building recommenders on top of user interaction data.
+- **Support multi-hot categorical columns**
+- **No model building or training**: Build whatever you want on top
 
 
 ## Installation
