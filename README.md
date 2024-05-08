@@ -48,7 +48,11 @@ Which will produce a model like this:
 ![Netron Model View](/media/images/example_netron.png)
 
 
-Look at the examples folder for more complete examples.
+## Examples
+The **examples** folder includes more complete examples including:
+* [Titanic](examples/titanic/titanic.ipynb): A simple binary classification example using the Titanic dataset.
+* [MovieLens](examples/movielens/movielens.ipynb): A two tower retrieval model using the MovieLens dataset.
+* [MovieLens Sequential](examples/sequential/movielens_sequential.ipynb): Another two tower retrieval model build on the MovieLens dataset preprocessed so that the input of the model is the list of movies the user has interacted with.
 
 ## Contributing
 Contributions to TF Tabular are welcome. If you have a feature you'd like to add, or a bug you'd like to fix, please open a pull request.
