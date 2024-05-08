@@ -51,8 +51,15 @@ Which will produce a model like this:
 
 Look at the examples folder for more complete examples.
 
+
 ## Contributing
-Contributions to TF Tabular are welcome. If you have a feature you'd like to add, or a bug you'd like to fix, please open a pull request.
+Contributions to TF Tabular are welcome. Check out the [contributing](https://github.com/xmartlabs/tf_tabular/CONTRIBUTING.md) guidelines for more details.
+
+### Setting up local development environment
+To set up a local development environment, you will need to first clone the repo and then install the required dependencies:
+1. Install Poetry follow the instructions on the [official Poetry website](https://python-poetry.org/docs/#installation).
+2. Run `poetry install`
+3. Run `poetry run pre-commit install` to install git pre-commit
 
 ## Roadmap:
 This is a list of possible features to be added in the future depending on need and interest expressed by the community.
