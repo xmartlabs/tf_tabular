@@ -53,7 +53,7 @@ Look at the examples folder for more complete examples.
 
 
 ## Contributing
-Contributions to TF Tabular are welcome. Check out the [contributing](https://github.com/xmartlabs/tf_tabular/CONTRIBUTING.md) guidelines for more details.
+Contributions to TF Tabular are welcome. Check out the [contributing](https://github.com/xmartlabs/tf_tabular/blob/main/CONTRIBUTING.md) guidelines for more details.
 
 ### Setting up local development environment
 To set up a local development environment, you will need to first clone the repo and then install the required dependencies:
