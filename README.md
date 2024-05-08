@@ -25,15 +25,14 @@ Here is a basic example of how to use TF Tabular:
 
 ```python
 from tf_tabular.builder import InputBuilder
-from tf_tabular.numeric_processor import NumericProcessor
 
 # Define columns to use and specify additional parameters:
-categoricals = ['Pclass', 'Sex']
+categoricals = ['Pclass', 'Embarked']
 numericals = ['Age', 'Fare']
 # ....
 
 # Build model:
-input_builder = InputBuilder(numeric_processor=NumericProcessor(num_projection=8, cross_features=False))
+input_builder = InputBuilder()
 input_builder.add_inputs_list(categoricals=categoricals,
                               numericals=numericals,
                               normalization_params=norm_params,
