@@ -1,9 +1,13 @@
 from enum import Enum
+import logging
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from typing import List
 from .utils import build_continuous_input, build_categorical_input
+
+
+logger = logging.getLogger(__name__)
 
 
 class ColumnType(Enum):
@@ -85,7 +89,7 @@ class NumInputSpec(InputSpec):
             self.variance = norm_params["var"]
         else:
             # No normalization
-            print(f"No normalization parameters found for {name}. Not normalizing this column")
+            logger.info(f"No normalization parameters found for {name}. Not normalizing this column")
 
     def build_layer(self):
         """Builds the input layer stack for the numeric feature"""

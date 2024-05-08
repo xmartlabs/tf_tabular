@@ -1,10 +1,14 @@
 from typing import List
+import logging
 
 import pandas as pd
 import numpy as np
 import tensorflow as tf
 
 from tf_tabular.utils import get_vocab
+
+
+logger = logging.getLogger(__name__)
 
 
 def normalize_ratings_by_mean_user_rating(ratings: pd.DataFrame, user_id_column="user_id"):
@@ -25,12 +29,14 @@ def split_by_user(
     ratings: pd.DataFrame,
     max_y_cutoff: int,
     val_split: float = 0.2,
+    target_split: float = 0.2,
 ):
     """Split dataset by users.
 
     :param pd.DataFrame ratings: User ratings dataframe
     :param int max_y_cutoff: Max number of movies that will be used as targets per user
     :param float val_split: Validation dataset split, defaults to 0.2
+    :param float target_split: Percent of user actions to leave as prediction target, defaults to 0.2
     :return tuple (pd.DataFrame, pd.DataFrame): Train and validation datasets
     """
     ratings = ratings.sort_values(["user_id", "timestamp"])
@@ -40,7 +46,7 @@ def split_by_user(
     ratings = ratings[["user_id", "movie_id", "user_rating"]].groupby(["user_id"], as_index=False).agg(list)
 
     def cutoff(x):
-        return min(int(len(x) * val_split), max_y_cutoff)
+        return min(int(len(x) * target_split), max_y_cutoff)
 
     ratings["user_history"] = ratings["movie_id"].apply(lambda x: x[: -cutoff(x)])
     ratings["target_id"] = ratings["movie_id"].apply(lambda x: x[-cutoff(x) :])
@@ -55,14 +61,14 @@ def split_by_user(
 
     np.random.shuffle(unique_users)
     num_users = len(unique_users)
-    print(f"Unique users: {num_users}")
-    val_users = unique_users[: int(num_users * 0.2)]
-    train_users = unique_users[int(num_users * 0.2) :]
+    logger.info(f"Unique users: {num_users}")
+    val_users = unique_users[: int(num_users * val_split)]
+    train_users = unique_users[int(num_users * val_split) :]
     train_set = ratings[ratings.user_id.isin(train_users)]
     val_set = ratings[ratings.user_id.isin(val_users)]
 
-    print(f"Train set size: {train_set.shape}")
-    print(f"Validation set size: {val_set.shape}")
+    logger.info(f"Train set size: {train_set.shape}")
+    logger.info(f"Validation set size: {val_set.shape}")
     return train_set, val_set
 
 
