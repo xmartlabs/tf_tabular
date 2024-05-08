@@ -7,15 +7,13 @@ name =  "tf-tabular"
 authors = [
     {name = "Mathias Claassen", email = "mathias@xmartlabs.com"},
 ]
-description = "TODO"
+description = "TF Tabular simplifies the experimentation and preprocessing of tabular datsets for TensorFlow models."
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11"
 ]
@@ -110,7 +108,7 @@ line-ending = "auto"
 
 
 [tool.pytest.ini_options]
-addopts = "--cov-report xml:coverage.xml --cov src --cov-fail-under 0 --cov-append -m 'not integration'"
+addopts = "--cov-report html:coverage.html --cov src --cov-fail-under 0 --cov-append -m 'not integration'"
 pythonpath = [
   "src"
 ]
