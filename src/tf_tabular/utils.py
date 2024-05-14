@@ -1,4 +1,5 @@
 from itertools import combinations
+import logging
 from typing import List
 
 import numpy as np
@@ -16,6 +17,8 @@ from tensorflow.keras.layers import (
     Concatenate,
 )
 from tensorflow.keras.regularizers import L2
+
+logger = logging.getLogger(__name__)
 
 
 def _input_layer(name: str, is_multi_hot: bool = False, is_string: bool = False):
@@ -49,8 +52,13 @@ def get_combiner(combiner: str, is_list: bool):
         raise NotImplementedError(f"Unknown combiner: {combiner}")
 
 
-def build_projection_layer(cont_layers: List[tf.Tensor], num_projection: int, l2_reg: float,
-                           activation: str = "relu", cross_features: bool = True):
+def build_projection_layer(
+    cont_layers: List[tf.Tensor],
+    num_projection: int,
+    l2_reg: float,
+    activation: str = "relu",
+    cross_features: bool = True,
+):
     """Builds a projection layer for continuous features. If cross_features is True, it will also include the
     multiplication of all pairs of continuous features.
 
@@ -88,11 +96,15 @@ def get_embedding_matrix(lookup, embedding_df: pd.DataFrame):
     om = lookup.output_mode
     lookup.output_mode = "int"
     out_of_vocab = embedding_df[~embedding_df.id.isin(lookup.get_vocabulary())]
-    embedding_df = embedding_df[embedding_df.id.isin(lookup.get_vocabulary())]
+    if out_of_vocab.shape[0] == 0:
+        # If there is no OOV embedding, we compute the mean of the existing embeddings
+        oov_embedding = np.mean(embedding_df.embedding.values, axis=0).reshape(1, -1)
+    else:
+        oov_embedding = np.mean(np.stack(out_of_vocab.embedding.values), axis=0).reshape(1, -1)
+        embedding_df = embedding_df[embedding_df.id.isin(lookup.get_vocabulary())]
     embedding_df["vocab_id"] = batch_run_lookup_on_df(embedding_df, lookup)
     embedding_df = embedding_df.sort_values("vocab_id")
     matrix = np.stack(embedding_df.embedding.values).astype(np.float32)
-    oov_embedding = np.mean(np.stack(out_of_vocab.embedding.values), axis=0).reshape(1, -1)
     matrix = np.concatenate([oov_embedding, matrix], axis=0)
     lookup.output_mode = om
     return matrix
@@ -104,7 +116,6 @@ def get_embedding_layer(
     name: str,
     lookup: StringLookup | IntegerLookup | None = None,
     embedding_df: pd.DataFrame | None = None,
-    verbose=False,
 ):
     """Builds the embedding layer for a categorical column. If embedding_df is provided, it will use the precomputed
     embeddings. Otherwise, it will create a trainable embedding layer.
@@ -114,17 +125,18 @@ def get_embedding_layer(
     :param str name: Name of the layer.
     :param StringLookup | IntegerLookup | None lookup: Optional lookup layer needed when passing precomputed embeddings.
     :param pd.DataFrame | None embedding_df: Precomputed embeddings in a dataframe containing 'id' and 'embeddings' columns, defaults to None
-    :param bool verbose: When set to True prints attributes of the embedding matrix, defaults to False. Only applies when embedding_df is not None.
     :return Embedding: Embedding layer
     """
     if embedding_df is None:
         return Embedding(num_tokens, embedding_dim, name=name)
+    if embedding_df.shape[0] == 0:
+        raise ValueError("Empty embedding dataframe is invalid. Either pass embeddings or set embedding_df to None.")
     embedding_matrix = get_embedding_matrix(lookup, embedding_df)
-    if verbose:
-        print("Num tokens:", num_tokens, ", embedding matrix:", embedding_matrix.shape)
-        print("Size of the matrix: ", embedding_matrix.size)
-        print("Memory size of one array element in bytes: ", embedding_matrix.itemsize)
-        print("Total size in kb: ", embedding_matrix.itemsize * embedding_matrix.size / 1024)
+
+    logger.debug("Num tokens:", num_tokens, ", embedding matrix:", embedding_matrix.shape)
+    logger.debug("Size of the matrix: ", embedding_matrix.size)
+    logger.debug("Memory size of one array element in bytes: ", embedding_matrix.itemsize)
+    logger.debug("Total size in kb: ", embedding_matrix.itemsize * embedding_matrix.size / 1024)
 
     return Embedding(
         num_tokens,
@@ -135,13 +147,15 @@ def get_embedding_layer(
     )
 
 
-def build_continuous_input(name, mean: float | None = None, variance: float | None = None, sample=None):
+def build_continuous_input(
+    name, mean: float | None = None, variance: float | None = None, sample: tf.data.Dataset | np.ndarray | None = None
+):
     """Builds the input layer stack for continuous features
 
     :param str name: Layer name
     :param float mean: mean of the feature values, defaults to None
     :param float variance: variance of the feature values, defaults to None
-    :param _type_ sample: A sample of features to adapt the layer. You must specify either mean + variance or sample, not both
+    :param tf.data.Dataset | np.array | None sample: A sample of features to adapt the layer. You must specify either mean + variance or sample, not both
     :return tuple: preprocessed input and inputs
     """
     inp = _input_layer(name)

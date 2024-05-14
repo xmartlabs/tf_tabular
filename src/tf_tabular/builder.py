@@ -34,7 +34,7 @@ class InputBuilder:
 
     def add_inputs_list(
         self,
-        categoricals: List[str],
+        categoricals: List[str] = [],
         numericals: List[str] = [],
         normalization_params: Dict = {},
         vocabs: Dict = {},
