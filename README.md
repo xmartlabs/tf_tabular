@@ -4,11 +4,11 @@ TF Tabular is a project aimed at simplifying the process of handling tabular dat
 
 ## Features
 
-- Create input layers based on lists of columns
-- Support custom embeddings
-- Support attention for mixing sequence layers
-- Support multi-hot categoricals
-- No model building or training: Build whatever you want on top
+- **Create input layers based on lists of columns**
+- **Support custom embeddings**: Useful to include external embeddings for example obtained from an LLM.
+- **Support sequence layers**: Useful for time series or when building recommenders on top of user interaction data.
+- **Support multi-hot categorical columns**
+- **No model building or training**: Build whatever you want on top
 
 
 ## Installation
@@ -54,8 +54,15 @@ The **examples** folder includes more complete examples including:
 * [MovieLens](examples/movielens/movielens.ipynb): A two tower retrieval model using the MovieLens dataset.
 * [MovieLens Sequential](examples/sequential/movielens_sequential.ipynb): Another two tower retrieval model build on the MovieLens dataset preprocessed so that the input of the model is the list of movies the user has interacted with.
 
+
 ## Contributing
-Contributions to TF Tabular are welcome. If you have a feature you'd like to add, or a bug you'd like to fix, please open a pull request.
+Contributions to TF Tabular are welcome. Check out the [contributing](https://github.com/xmartlabs/tf_tabular/blob/main/CONTRIBUTING.md) guidelines for more details.
+
+### Setting up local development environment
+To set up a local development environment, you will need to first clone the repo and then install the required dependencies:
+1. Install Poetry follow the instructions on the [official Poetry website](https://python-poetry.org/docs/#installation).
+2. Run `poetry install`
+3. Run `poetry run pre-commit install` to install git pre-commit
 
 ## Roadmap:
 This is a list of possible features to be added in the future depending on need and interest expressed by the community.
