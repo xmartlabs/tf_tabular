@@ -25,15 +25,14 @@ Here is a basic example of how to use TF Tabular:
 
 ```python
 from tf_tabular.builder import InputBuilder
-from tf_tabular.numeric_processor import NumericProcessor
 
 # Define columns to use and specify additional parameters:
-categoricals = ['Pclass', 'Sex']
+categoricals = ['Pclass', 'Embarked']
 numericals = ['Age', 'Fare']
 # ....
 
 # Build model:
-input_builder = InputBuilder(numeric_processor=NumericProcessor(num_projection=8, cross_features=False))
+input_builder = InputBuilder()
 input_builder.add_inputs_list(categoricals=categoricals,
                               numericals=numericals,
                               normalization_params=norm_params,
@@ -49,7 +48,11 @@ Which will produce a model like this:
 ![Netron Model View](/media/images/example_netron.png)
 
 
-Look at the examples folder for more complete examples.
+## Examples
+The **examples** folder includes more complete examples including:
+* [Titanic](examples/titanic/titanic.ipynb): A simple binary classification example using the Titanic dataset.
+* [MovieLens](examples/movielens/movielens.ipynb): A two tower retrieval model using the MovieLens dataset.
+* [MovieLens Sequential](examples/sequential/movielens_sequential.ipynb): Another two tower retrieval model build on the MovieLens dataset preprocessed so that the input of the model is the list of movies the user has interacted with.
 
 ## Contributing
 Contributions to TF Tabular are welcome. If you have a feature you'd like to add, or a bug you'd like to fix, please open a pull request.
