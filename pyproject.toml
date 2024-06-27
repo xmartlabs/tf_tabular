@@ -3,7 +3,7 @@ requires = ["flit"]
 build-backend = "flit.buildapi"
 
 [project]
-name =  "tf-tabular"
+name =  "tabular-tf"
 authors = [
     {name = "Mathias Claassen", email = "mathias@xmartlabs.com"},
 ]
