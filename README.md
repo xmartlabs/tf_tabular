@@ -16,7 +16,7 @@ TF Tabular is a project aimed at simplifying the process of handling tabular dat
 To get started with TF Tabular, you will need to install it using pip:
 
 ```sh
-pip install tf-tabular
+pip install tabular-tf
 ```
 
 ## Usage
