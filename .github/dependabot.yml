@@ -3,17 +3,18 @@ updates:
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: daily
-      time: "07:00"
+      interval: weekly
     open-pull-requests-limit: 3
     allow:
       - dependency-type: direct
+    ignore:
+      - dependency-name: tensorflow
     commit-message:
       prefix: "update: "
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
       time: "07:00"
     commit-message:
       prefix: "update: "

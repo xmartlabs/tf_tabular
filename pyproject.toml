@@ -68,6 +68,7 @@ exclude = [
     ".git-rewrite",
     ".hg",
     ".ipynb_checkpoints",
+    ".ipynb",
     ".mypy_cache",
     ".nox",
     ".pants.d",
