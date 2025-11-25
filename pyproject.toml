@@ -29,7 +29,7 @@ dependencies = [
 test = [
     "ruff>=0.2.0",
     "mypy==1.14.1",
-    "pre-commit==3.8.0",
+    "pre-commit==4.0.1",
     "pytest-cov==6.0.0",
     "pytest-mock<3.14.1",
     "pytest-runner",
