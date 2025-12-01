@@ -28,7 +28,7 @@ dependencies = [
 [project.optional-dependencies]
 test = [
     "ruff>=0.2.0",
-    "mypy==1.14.1",
+    "mypy==1.19.0",
     "pre-commit==3.8.0",
     "pytest-cov==6.0.0",
     "pytest-mock<3.14.1",
